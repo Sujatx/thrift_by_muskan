@@ -1,0 +1,266 @@
+/* Pin cascade layer order. The admin imports Tailwind (preflight → @layer
+   base, utilities → @layer utilities). Declaring `storefront-base` LAST
+   makes the storefront's scoped typography win over Tailwind's preflight,
+   so the admin's global preflight never alters the public store. */
+@layer theme, base, components, utilities, storefront-base;
+
+/* ── Design Tokens ───────────────────────────────────────────── */
+:root {
+  /* Brand palette */
+  --bg:          #FAF7F2;
+  --ink:         #1A1A18;
+  --accent:      #C4714A;
+  --accent-dark: #8B3A1A;
+  --warm-gray:   #E8E2D9;
+  --warm-gray-2: #F0EAE0;
+  --border:      #EDE8E1;
+  --muted:       #5A5650;
+  --tan:         #A89880;
+  --sage:        #7A8C6E;
+  --footer-bg:   #111110;
+
+  /* Typography */
+  --font-sans:   'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-serif:  'Playfair Display', Georgia, serif;
+
+  /* UI primitives */
+  --radius:      0px;
+  --radius-lg:   0px;
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:   0 4px 16px rgba(0,0,0,0.10);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,0.12);
+}
+
+/* ── Reset ───────────────────────────────────────────────────────
+   box-sizing is safe to keep global. The margin/padding zero-out is
+   UNLAYERED, which means it outranks every Tailwind utility (which live
+   in @layer utilities) — so it MUST be scoped to the storefront only,
+   otherwise it kills `ml-auto`, `mx-auto`, `px-*`, etc. inside the
+   Tailwind-based admin (`.admin-app`). ──────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+}
+
+:where(.storefront-app) *,
+:where(.storefront-app) *::before,
+:where(.storefront-app) *::after {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: var(--bg);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 16px;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Animations ──────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Storefront element defaults ──────────────────────────────────
+   Scoped to `.storefront-app` so they ONLY style the public store and
+   never bleed into the admin dashboard (which is a self-contained
+   Tailwind + shadcn surface under `.admin-app` / `.admin-root`).
+   `:where()` contributes zero specificity, so the storefront cascade
+   is identical to before this was scoped. ──────────────────────── */
+@layer storefront-base {
+  :where(.storefront-app) :is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+  }
+
+  :where(.storefront-app) h1 { font-size: clamp(2rem, 5.5vw, 5.25rem); }
+  :where(.storefront-app) h2 { font-size: clamp(1.75rem, 4vw, 3rem); }
+  :where(.storefront-app) h3 { font-size: clamp(1.2rem, 2.5vw, 1.5rem); }
+  :where(.storefront-app) h4 { font-size: 1.25rem; }
+  :where(.storefront-app) h5 { font-size: 1.1rem; }
+  :where(.storefront-app) h6 { font-size: 1rem; }
+
+  :where(.storefront-app) p {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  :where(.storefront-app) a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  :where(.storefront-app) a:hover { color: var(--accent-dark); }
+
+  :where(.storefront-app) :is(input, textarea, select) {
+    font-family: var(--font-sans);
+    border: 1.5px solid var(--border);
+    border-radius: 0;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: #fff;
+    color: var(--ink);
+    width: 100%;
+  }
+
+  :where(.storefront-app) :is(input, textarea, select):focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(196, 113, 74, 0.1);
+  }
+
+  :where(.storefront-app) :is(input, textarea)::placeholder {
+    color: var(--muted);
+    opacity: 0.7;
+  }
+}
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+.btn-primary {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  background-color: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 0;
+  padding: 16px 36px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--accent-dark);
+  color: var(--bg);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn-primary:disabled {
+  background-color: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-secondary {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: var(--ink);
+  border: none;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  padding: 0 0 2px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ── Cards ───────────────────────────────────────────────────── */
+.card {
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Badges ──────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.badge-success  { background-color: #dcfce7; color: #16a34a; }
+.badge-danger   { background-color: #fee2e2; color: #dc2626; }
+.badge-warning  { background-color: #fef9c3; color: #a16207; }
+.badge-info     { background-color: #ede9fe; color: #7c3aed; }
+
+/* ── Divider ─────────────────────────────────────────────────── */
+.doodle-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0;
+}
+
+/* ── Utility ──────────────────────────────────────────────────────
+   Scoped to `.storefront-app`. These bare names (.flex, .flex-col,
+   .gap-4, .p-4, .text-center …) collide with Tailwind's utilities; left
+   global + unlayered they outrank Tailwind inside the admin and break its
+   responsive layout. Scoping keeps them storefront-only. ───────────── */
+:where(.storefront-app) .flex         { display: flex; }
+:where(.storefront-app) .flex-center  { display: flex; align-items: center; justify-content: center; }
+:where(.storefront-app) .flex-between { display: flex; align-items: center; justify-content: space-between; }
+:where(.storefront-app) .flex-col     { display: flex; flex-direction: column; }
+:where(.storefront-app) .gap-4  { gap: 1rem; }
+:where(.storefront-app) .gap-6  { gap: 1.5rem; }
+:where(.storefront-app) .mt-4   { margin-top: 1rem; }
+:where(.storefront-app) .mb-4   { margin-bottom: 1rem; }
+:where(.storefront-app) .p-4    { padding: 1rem; }
+:where(.storefront-app) .text-center  { text-align: center; }
+:where(.storefront-app) .text-muted   { color: var(--muted); }
+:where(.storefront-app) .cursor-pointer { cursor: pointer; }

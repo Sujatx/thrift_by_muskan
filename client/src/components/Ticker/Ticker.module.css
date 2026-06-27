@@ -1,0 +1,30 @@
+.ticker {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 14px 0;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  animation: marquee 22s linear infinite;
+  white-space: nowrap;
+}
+
+.item {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding-right: 0;
+}
+
+.dot {
+  color: var(--accent);
+  padding: 0 36px;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}

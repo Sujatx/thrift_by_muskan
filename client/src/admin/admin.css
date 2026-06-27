@@ -1,0 +1,201 @@
+/* ════════════════════════════════════════════════════════════════════
+   Admin design system — Tailwind v4
+   Uses the full `@import "tailwindcss"` (theme + preflight + utilities)
+   so breakpoints, container sizes and responsive variants are wired up
+   correctly. Preflight lives in @layer base; the storefront's rules are
+   either unlayered or in the higher `storefront-base` layer (order pinned
+   in global.css), so admin preflight never affects the storefront.
+   ════════════════════════════════════════════════════════════════════ */
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/* Explicitly declare breakpoints. In this project's @tailwindcss/postcss
+   setup the default theme breakpoints weren't reaching the variant engine,
+   so `sm:`/`lg:` variants emitted with no media query (applying at all
+   widths). Declaring them here restores proper responsive behaviour. */
+@theme {
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+}
+
+/* ── Map design tokens → Tailwind color/utility namespace ──────────────
+   NAMING RULE: any CSS variable that also exists in global.css (storefront)
+   gets the --admin- prefix here so load-order can never cause the storefront
+   value to bleed into the admin UI. The Tailwind utilities (bg-accent,
+   border-border, text-muted-foreground, etc.) stay unchanged because
+   @theme inline maps them to --admin-* variables, not the raw names.
+
+   Clashes with global.css (the renamed ones):
+     --accent            → --admin-accent
+     --accent-foreground → --admin-accent-fg
+     --border            → --admin-border
+     --muted             → --admin-muted
+     --muted-foreground  → --admin-muted-fg
+     --radius, --radius-lg → --admin-radius (already done)
+   ─────────────────────────────────────────────────────────────────────── */
+@theme inline {
+  --color-background:            var(--background);
+  --color-foreground:            var(--foreground);
+  --color-card:                  var(--card);
+  --color-card-foreground:       var(--card-foreground);
+  --color-popover:               var(--popover);
+  --color-popover-foreground:    var(--popover-foreground);
+  --color-primary:               var(--primary);
+  --color-primary-foreground:    var(--primary-foreground);
+  --color-primary-hover:         var(--primary-hover);
+  --color-secondary:             var(--secondary);
+  --color-secondary-foreground:  var(--secondary-foreground);
+  --color-muted:                 var(--admin-muted);
+  --color-muted-foreground:      var(--admin-muted-fg);
+  --color-accent:                var(--admin-accent);
+  --color-accent-foreground:     var(--admin-accent-fg);
+  --color-destructive:           var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border:                var(--admin-border);
+  --color-input:                 var(--input);
+  --color-ring:                  var(--ring);
+
+  --color-success:    var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning:    var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-info:       var(--info);
+  --color-info-bg:    var(--info-bg);
+  --color-danger:     var(--danger);
+  --color-danger-bg:  var(--danger-bg);
+
+  --color-sidebar:        var(--sidebar);
+  --color-sidebar-border: var(--sidebar-border);
+
+  --radius-sm: calc(var(--admin-radius) - 4px);
+  --radius-md: calc(var(--admin-radius) - 2px);
+  --radius-lg: var(--admin-radius);
+  --radius-xl: calc(var(--admin-radius) + 4px);
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Token values ─────────────────────────────────────────────────────
+   iOS system palette. Defined on :root / .dark (NOT just .admin-app) so
+   Radix portals (dropdowns, dialogs, tooltips) can resolve them.
+
+   Variables prefixed with --admin- are ones that would otherwise clash
+   with identically-named storefront tokens in global.css. All other
+   names (--background, --primary, --destructive, etc.) do not exist in
+   global.css so they are safe unscoped. ─────────────────────────────── */
+:root {
+  --background:          #f2f2f7;
+  --foreground:          #000000;
+  --card:                #ffffff;
+  --card-foreground:     #000000;
+  --popover:             #ffffff;
+  --popover-foreground:  #000000;
+  --primary:             #007aff;
+  --primary-foreground:  #ffffff;
+  --primary-hover:       #0066dd;
+  --secondary:           #ffffff;
+  --secondary-foreground: #000000;
+  --admin-muted:         #e5e5ea;
+  --admin-muted-fg:      #8e8e93;
+  --admin-accent:        #e5e5ea;
+  --admin-accent-fg:     #000000;
+  --destructive:         #ff3b30;
+  --destructive-foreground: #ffffff;
+  --admin-border:        #c6c6c8;
+  --input:               #ffffff;
+  --ring:                #007aff;
+
+  --success:    #34c759;
+  --success-bg: #d1f5da;
+  --warning:    #ff9500;
+  --warning-bg: #fff3cd;
+  --info:       #5856d6;
+  --info-bg:    #eeeeff;
+  --danger:     #ff3b30;
+  --danger-bg:  #ffe5e4;
+
+  --sidebar:        #ffffff;
+  --sidebar-border: #c6c6c8;
+
+  --chart-1: #007aff;
+  --chart-2: #34c759;
+
+  --admin-radius: 0.75rem;
+}
+
+.dark {
+  --background:          #000000;
+  --foreground:          #ffffff;
+  --card:                #1c1c1e;
+  --card-foreground:     #ffffff;
+  --popover:             #1c1c1e;
+  --popover-foreground:  #ffffff;
+  --primary:             #0a84ff;
+  --primary-foreground:  #ffffff;
+  --primary-hover:       #409cff;
+  --secondary:           #2c2c2e;
+  --secondary-foreground: #ffffff;
+  --admin-muted:         #2c2c2e;
+  --admin-muted-fg:      #8e8e93;
+  --admin-accent:        #3a3a3c;
+  --admin-accent-fg:     #ffffff;
+  --destructive:         #ff453a;
+  --destructive-foreground: #ffffff;
+  --admin-border:        #38383a;
+  --input:               #2c2c2e;
+  --ring:                #0a84ff;
+
+  --success:    #30d158;
+  --success-bg: #0d3320;
+  --warning:    #ffd60a;
+  --warning-bg: #332900;
+  --info:       #5e5ce6;
+  --info-bg:    #1a1a40;
+  --danger:     #ff453a;
+  --danger-bg:  #330d0b;
+
+  --sidebar:        #1c1c1e;
+  --sidebar-border: #38383a;
+
+  --chart-1: #0a84ff;
+  --chart-2: #30d158;
+}
+
+/* Element-level styling stays scoped to the admin surface. */
+.admin-app {
+  color-scheme: light;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark .admin-app {
+  color-scheme: dark;
+}
+
+/* ── Admin-scoped base touch-ups ──────────────────────────────────────── */
+@layer base {
+  .admin-app * {
+    border-color: var(--admin-border);
+  }
+
+  .admin-app *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .admin-app *::-webkit-scrollbar-thumb {
+    background: var(--admin-border);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  .admin-app *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}

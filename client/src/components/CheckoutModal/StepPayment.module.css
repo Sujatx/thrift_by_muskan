@@ -1,0 +1,217 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stepTitle {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+
+.summary {
+  padding: 16px;
+  background-color: var(--warm-gray-2);
+  border: 1px solid var(--border);
+}
+
+.summaryTitle {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: var(--ink);
+  letter-spacing: 0.3px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+
+.summaryRow.total {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.divider {
+  height: 1px;
+  background-color: var(--border);
+  margin: 8px 0;
+}
+
+.customerInfo {
+  padding: 16px;
+  border: 1px solid var(--border);
+  background-color: var(--bg);
+}
+
+.infoTitle {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: var(--ink);
+  letter-spacing: 0.3px;
+}
+
+.infoParagraph {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  margin: 0 0 8px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.infoParagraph:last-child { margin-bottom: 0; }
+
+.timerBox {
+  padding: 14px 16px;
+  background-color: #fef9c3;
+  border: 1px solid #fde047;
+}
+
+.timerText {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--ink);
+}
+
+.timer {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.timerGreen  { color: #16a34a; }
+.timerOrange { color: #d97706; }
+.timerRed    { color: #dc2626; }
+
+.timerPulse { animation: pulse 1s ease-in-out infinite; }
+
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.timerSubtext {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+.paymentBtn {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.paymentBtn:hover:not(:disabled) { background-color: var(--accent-dark); }
+
+.paymentBtn:disabled {
+  background-color: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.info {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.info p { margin: 0; }
+
+.loadingBox {
+  padding: 12px 14px;
+  background-color: var(--warm-gray-2);
+  border: 1px dashed var(--border);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--ink);
+  text-align: center;
+}
+
+.errorBox {
+  padding: 16px;
+  border: 1px solid #dc2626;
+  background-color: #fff1f2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.errorTitle {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #dc2626;
+  margin: 0;
+}
+
+.errorText {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--ink);
+  margin: 0;
+}
+
+.errorActions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.whatsappBtn,
+.retryBtn {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  border: none;
+  padding: 11px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.whatsappBtn:hover:not(:disabled),
+.retryBtn:hover:not(:disabled) { opacity: 0.85; }
+
+.whatsappBtn:disabled,
+.retryBtn:disabled {
+  background-color: var(--border);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.whatsappBtn { background-color: #22c55e; color: #fff; }
+.retryBtn    { background-color: var(--accent); color: var(--bg); }

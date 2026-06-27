@@ -1,0 +1,13 @@
+const mongoose = require("mongoose");
+
+const adminSchema = new mongoose.Schema(
+  {
+    email: { type: String, required: true, unique: true, trim: true, lowercase: true },
+    passwordHash: { type: String, required: true },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date }
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Admin", adminSchema);
